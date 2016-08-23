@@ -4,8 +4,10 @@ const standardExpectancy = 81.5;
 //Must be a factor of 1 or the stages won't function
 const growthPerTick = .05;
 
-//FPS Goal
-//const frameRate = 2;
+//knowledge lost per tick (when applicable)
+var knowledgeLoss =  0.1
+//knowledge gained (when learning)
+var knowledgeGain = 2
 
 //tickRate should be == frameRate
 //tickRate should also be a factor of frameRate
@@ -20,11 +22,20 @@ function human() {
   this.stage = "baby"
 
   //0 is netural
+  //+10 is max
+  //-10 is lowest
+
   this.happiness = 0;
   this.fulfillment = 0; //Doing job well
   this.health = 0; //Random colds etc ...
+  this.knowledge = 0;
 }
 
+//Upgrade stat
+function research(stat, increase, element) {
+  stat + increase;
+  $(element).css("pointer-events", "none");
+}
 
 //Calculates the delay between updates needed to reach the desired tick rate
 var tickGap = 1000 / tickRate;
@@ -74,8 +85,7 @@ function onTick() {
   //check if user is dead
   if (user.alive == false) {
     stop();
-    var $input = $('<input type="button" value="Retry" onclick="location.reload();"/>');
-    $input.appendTo($("#stats"));
+    $(".overlay").css("width", "100%");
     alert("You died due to " + user.deathNote + ".");
   };
 
