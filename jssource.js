@@ -1,10 +1,13 @@
 //Standard life expectancy
 const standardExpectancy = 81.5;
 
-//FPS Goal
-const frameRate = 2;
+//Must be a factor of 1 or the stages won't function
+const growthPerTick = .05;
 
-//tickRate should be <= frameRate
+//FPS Goal
+//const frameRate = 2;
+
+//tickRate should be == frameRate
 //tickRate should also be a factor of frameRate
 const tickRate = 2;
 
@@ -14,6 +17,7 @@ function human() {
   this.expectancy = standardExpectancy;
   this.alive = true;
   this.deathNote = "an error... complain."
+  this.stage = "baby"
 
   //0 is netural
   this.happiness = 0;
@@ -21,15 +25,6 @@ function human() {
   this.health = 0; //Random colds etc ...
 }
 
-
-//Calculates the delay between updates needed to reach the desired frame rate
-var frameGap = 1000 / frameRate;
-
-//Runs the frames at the correct interval
-var frame = setInterval(onFrame,frameGap);
-//To cancel
-//clearInterval(frame);
-//frame = 0;
 
 //Calculates the delay between updates needed to reach the desired tick rate
 var tickGap = 1000 / tickRate;
@@ -44,55 +39,64 @@ function onFrame() {
   //Too be ran every frame
 
   $("#age").text(user.age/100);
+  $("#stage").text(user.stage);
 
 }
 
-
 function onTick() {
+  var age = user.age/100;
   //Too be ran every tick
 
-  //To avoid floating point problems I'm adding 5 then / by 100 to add .05
-  user.age += 5;
+  //To avoid floating point problems I'm adding
+  //growthPerTick * 100 then / by 100 to add growthPerTick
+  user.age += (growthPerTick * 100);
+
+  if (age == .95) {
+    user.stage = "toddler";
+  } else if (age == (3 - growthPerTick)) {
+    user.stage = "child";
+  } else if (age == (13 - growthPerTick)) {
+    user.stage = "teenager";
+  } else if (age == (20 - growthPerTick)) {
+    user.stage = "adult";
+  } else if (age == (60 - growthPerTick)) {
+    user.stage = "pensioner";
+  };
 
   //Die if too old
-  if (user.age/100 >= user.expectancy){
+  if (age >= user.expectancy){
 
       user.alive = false;
-      user.deathNote = "old age."
+      user.deathNote = "old age"
+      user.stage = "corpse"
     };
 
   //check if user is dead
   if (user.alive == false) {
     stop();
-    alert("You died due to " + user.deathNote);
     var $input = $('<input type="button" value="Retry" onclick="location.reload();"/>');
-    $input.appendTo($("body"));
+    $input.appendTo($("#stats"));
+    alert("You died due to " + user.deathNote + ".");
   };
+
+
+  //Update the frame.
+  onFrame();
 };
 
-
+//Once loaded, create a player.
 $(function() {
     user = new human();
 });
 
-paused = false;
+
 //Stops updating
 function stop() {
-  if (paused == false){
-    paused = !paused;
-    clearInterval(tick);
-    tick = 0;
-    clearInterval(frame);
-    frame = 0;
-  };
+  clearInterval(tick);
+  tick = 0;
 };
 
 //Starts updating
 function start() {
-  //Checking to make sure you can't have multiple ticks running
-  if (paused == true){
-    paused = !paused;
-    var frame = setInterval(onFrame,frameGap);
-    var tick = setInterval(onTick,tickGap);
-  };
+  var tick = setInterval(onTick,tickGap);
 };
