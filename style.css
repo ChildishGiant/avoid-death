@@ -21,6 +21,13 @@ p{
   font-size: 2em;
 }
 
+a.action{
+  cursor: pointer;
+  font-size: 2em;
+  text-decoration: underline;
+  color: #33bb23;
+}
+
 div#controls{
   width:25%;
   height: 100%;
@@ -29,9 +36,14 @@ div#controls{
 }
 
 div#stats{
+  border-bottom: 2px solid #4e585c;
+  width: 75%;
+  margin-bottom: 5px;
+}
+
+div#main{
   width: 75%;
   float: left;
-  height: 100%;
 }
 
 button{
@@ -42,4 +54,27 @@ button{
   border-radius: 3px;
   margin: 3px;
   font-size: 1.5em;
+  padding: 3px;
+}
+
+div.overlay{
+  height: 100%;
+  width: 0;
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  background-color: rgb(0,0,0); /* Black fallback color */
+  background-color: rgba(0,0,0, 0.9); /* Black w/opacity */
+  overflow-x: hidden; /* Disable horizontal scroll */
+  text-align: center;
+}
+
+button#retry{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 7em;
+  border-radius: 10px;
 }
