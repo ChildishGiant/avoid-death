@@ -14,11 +14,12 @@
     <div id="main">
 
       <div id="stats">
-        <p id="ageWrap">You're <span id="age">0</span> years old.</p>
+        <p id="ageWrap">You're <span id="age">0.00</span> years old.</p>
         <p id="stageWrap">You're a <span id="stage">baby</span>.</p>
+        <p id="knowledgeWrap">You're <span id="knowledge">dumb</span>.</p>
       </div>
 
-      <a class="action">Learn</a>
+      <a class="action" onclick="research(user.knowledge, 1, this);">Learn</a>
 
     </div>
     <div id="controls">
