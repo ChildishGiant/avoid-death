@@ -9,6 +9,9 @@ var knowledgeLoss =  0.1
 //knowledge gained (when learning)
 var knowledgeGain = 2
 
+//How many milliseconds before you can do an action again. (1000 = 1 second)
+var cooldown = 2000
+
 //tickRate should be == frameRate
 //tickRate should also be a factor of frameRate
 const tickRate = 2;
@@ -26,15 +29,24 @@ function human() {
   //-10 is lowest
 
   this.happiness = 0;
+  this.happinessStage = ""
   this.fulfillment = 0; //Doing job well
+
   this.health = 0; //Random colds etc ...
-  this.knowledge = 0;
+  this.healthStage = "healty";
+  this.knowledge = -5;
+  this.knowledgeStage = "dumb";
 }
 
 //Upgrade stat
 function research(stat, increase, element) {
-  stat + increase;
-  $(element).css("pointer-events", "none");
+  stat += increase;
+  $(element).addClass("disabled")
+
+  setTimeout(function(){
+    $(element).removeClass("disabled")
+  }, cooldown);
+
 }
 
 //Calculates the delay between updates needed to reach the desired tick rate
@@ -49,20 +61,22 @@ var tick = setInterval(onTick,tickGap);
 function onFrame() {
   //Too be ran every frame
 
-  $("#age").text(user.age/100);
+  $("#age").text((user.age/100).toFixed(2));
   $("#stage").text(user.stage);
+  $("#knowledge").text(user.knowledgeStage)
 
 }
 
 function onTick() {
   var age = user.age/100;
+  var knowledge = user.knowledge;
   //Too be ran every tick
 
   //To avoid floating point problems I'm adding
   //growthPerTick * 100 then / by 100 to add growthPerTick
   user.age += (growthPerTick * 100);
 
-  if (age == .95) {
+  if (age == 1 - growthPerTick) {
     user.stage = "toddler";
   } else if (age == (3 - growthPerTick)) {
     user.stage = "child";
@@ -73,6 +87,15 @@ function onTick() {
   } else if (age == (60 - growthPerTick)) {
     user.stage = "pensioner";
   };
+
+  if (knowledge == -10) {
+
+  }
+  } else if (knowledge == -5) {
+    user.knowledgeStage = "a bit dumb"
+  } else if (knowledge == 0) {
+    user.knowledgeStage = "of average intelligence"
+  } else if (knowledge == 5)
 
   //Die if too old
   if (age >= user.expectancy){
