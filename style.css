@@ -78,3 +78,8 @@ button#retry{
   font-size: 7em;
   border-radius: 10px;
 }
+
+a.disabled{
+  opacity: 0.5;
+  pointer-events: none;
+}
