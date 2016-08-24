@@ -89,13 +89,14 @@ function onTick() {
   };
 
   if (knowledge == -10) {
-
-  }
+    user.knowledgeStage = "brain-dead";
   } else if (knowledge == -5) {
-    user.knowledgeStage = "a bit dumb"
+    user.knowledgeStage = "a bit dumb";
   } else if (knowledge == 0) {
-    user.knowledgeStage = "of average intelligence"
-  } else if (knowledge == 5)
+    user.knowledgeStage = "of average intelligence";
+  } else if (knowledge == 5){
+    user.knowledgeStage = "smart";
+  };
 
   //Die if too old
   if (age >= user.expectancy){
